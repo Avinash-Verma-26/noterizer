@@ -51,7 +51,12 @@ async function registerUserController(req, res) {
  */
 async function loginUserController(req, res) {
   const { email, password } = req.body;
-  const user = userModel.findOne({ email });
+  if (!email || !password) {
+    return res.status(400).json({
+      message: "Email or Password not provided",
+    });
+  }
+  const user = await userModel.findOne({ email });
   if (!user) {
     return res.status(400).json({
       message: "Invalid email",
@@ -74,7 +79,7 @@ async function loginUserController(req, res) {
   );
   res.cookie("token", token);
   res.status(200).json({
-    message: "User logged in succesfully",
+    message: "User logged in successfully",
     user: {
       id: user._id,
       username: user.username,
