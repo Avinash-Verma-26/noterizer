@@ -24,7 +24,8 @@ export async function register({ username, email, password }: RegisterProps) {
     );
     return response.data;
   } catch (err) {
-    console.log(err);
+    console.log("Failed to register", err);
+    throw err;
   }
 }
 
@@ -37,18 +38,24 @@ export async function login({ email, password }: LoginProps) {
     );
     return response.data;
   } catch (err) {
-    console.log(err);
+    console.log("Failed to login", err);
+    throw err;
   }
 }
 
 export async function logout() {
   try {
-    const response = await axios.post(`${serverUrl}/logout`, {
-      withCredentials: true,
-    });
+    const response = await axios.post(
+      `${serverUrl}/logout`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
     return response.data;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 }
 
@@ -60,5 +67,6 @@ export async function getMe() {
     return response.data;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 }

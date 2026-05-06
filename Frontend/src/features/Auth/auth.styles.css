@@ -34,3 +34,8 @@ main {
     text-decoration: none;
   }
 }
+.home-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
