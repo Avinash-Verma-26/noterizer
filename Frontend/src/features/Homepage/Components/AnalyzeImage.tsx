@@ -1,11 +1,14 @@
 import React from "react";
+import { convertNote } from "../services/notes.api";
 type AnalyzeImageProps = {
   setHasImage: React.Dispatch<React.SetStateAction<boolean>>;
   noteImage: string;
 };
 const AnalyzeImage = ({ setHasImage, noteImage }: AnalyzeImageProps) => {
-  const handleConvert = async (image: string) => {
-    await convertNote(noteImage);
+  const handleConvert = async (noteImage: string) => {
+    const encodedImage = noteImage.split(",")[1];
+    const data = await convertNote({ encodedImage });
+    console.log(data);
   };
   return (
     <div className="image-analyzer">

@@ -1,5 +1,6 @@
 const OpenAI = require("openai");
-const openAi = new OpenAI({ apikey: process.env.OPEN_AI_API_KEY });
+const notesModel = require("../models/notes.model");
+const openAi = new OpenAI({ apiKey: process.env.OPEN_AI_API_KEY });
 
 /**
  * @name convertNoteToText
@@ -13,7 +14,7 @@ async function convertNoteToText(req, res) {
       message: "Please provide base64 encoded image to be converted to text",
     });
   }
-  const response = await openai.chat.completions.create({
+  const response = await openAi.chat.completions.create({
     model: "gpt-4o",
     messages: [
       {
@@ -21,7 +22,7 @@ async function convertNoteToText(req, res) {
         content: [
           {
             type: "image_url",
-            image_url: { url: `data:${mediaType};base64,${encodedImage}` },
+            image_url: { url: `data:image/jpeg;base64,${encodedImage}` },
           },
           { type: "text", text: "Transcribe all text from this image." },
         ],
@@ -34,4 +35,20 @@ async function convertNoteToText(req, res) {
   return res.status(200).json({ text });
 }
 
-module.exports = { convertNoteToText };
+/**
+ * @name getUserNotes
+ * @description Get all notes for the current user from the cookies
+ * @access Private
+ */
+async function getUserNotes(req, res) {
+  try {
+    const userId = req.user.id;
+    const notes = await notesModel.find({ userId });
+    return res.status(200).json({ notes });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+module.exports = { convertNoteToText, getUserNotes };
