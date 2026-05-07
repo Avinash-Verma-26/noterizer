@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { LoginProps, RegisterProps } from "../../../types/types";
-const serverUrl = "http://localhost:3000/api/auth";
+import { serverUrl } from "../../../main";
 
 export async function register({
   firstname,
@@ -10,7 +10,7 @@ export async function register({
 }: RegisterProps) {
   try {
     const response = await axios.post(
-      `${serverUrl}/register`,
+      `${serverUrl}/auth/register`,
       {
         firstname,
         lastname,
@@ -29,7 +29,7 @@ export async function register({
 export async function login({ email, password }: LoginProps) {
   try {
     const response = await axios.post(
-      `${serverUrl}/login`,
+      `${serverUrl}/auth/login`,
       { email, password },
       { withCredentials: true },
     );
@@ -43,7 +43,7 @@ export async function login({ email, password }: LoginProps) {
 export async function logout() {
   try {
     const response = await axios.post(
-      `${serverUrl}/logout`,
+      `${serverUrl}/auth/logout`,
       {},
       {
         withCredentials: true,
@@ -58,7 +58,7 @@ export async function logout() {
 
 export async function getMe() {
   try {
-    const response = await axios.get(`${serverUrl}/getMe`, {
+    const response = await axios.get(`${serverUrl}/auth/getMe`, {
       withCredentials: true,
     });
     return response.data;

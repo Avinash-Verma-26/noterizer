@@ -33,10 +33,14 @@ const rejectStyle: React.CSSProperties = {
 };
 const DropZone = ({ setHasImage, setNoteImage }: DropZoneProps) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    console.log(acceptedFiles[0]);
-    const imagePath = URL.createObjectURL(acceptedFiles[0]);
-    setNoteImage(imagePath);
-    setHasImage(true);
+    // console.log(acceptedFiles[0]);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      setNoteImage(dataUrl);
+      setHasImage(true);
+    };
+    reader.readAsDataURL(acceptedFiles[0]);
   }, []);
   const {
     getRootProps,

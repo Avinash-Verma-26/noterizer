@@ -1,10 +1,9 @@
-import "../../../styles/buttons.css";
 import "../homepage.styles.css";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../Auth/hooks/useAuth";
-import DropZone from "../Components/DropZone";
+import DropZone from "../components/DropZone";
 import { useState } from "react";
-import AnalyzeImage from "../Components/AnalyzeImage";
+import AnalyzeImage from "../components/AnalyzeImage";
 
 const Homepage = () => {
   const [hasImage, setHasImage] = useState<boolean>(false);

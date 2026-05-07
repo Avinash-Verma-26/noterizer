@@ -4,6 +4,9 @@ type AnalyzeImageProps = {
   noteImage: string;
 };
 const AnalyzeImage = ({ setHasImage, noteImage }: AnalyzeImageProps) => {
+  const handleConvert = async (image: string) => {
+    await convertNote(noteImage);
+  };
   return (
     <div className="image-analyzer">
       <div className="image-preview">
@@ -15,7 +18,12 @@ const AnalyzeImage = ({ setHasImage, noteImage }: AnalyzeImageProps) => {
           >
             ReUpload
           </button>
-          <button className="button primary-button">Convert</button>
+          <button
+            onClick={() => handleConvert(noteImage)}
+            className="button primary-button"
+          >
+            Convert
+          </button>
         </div>
       </div>
       <div className="ocr-panel"></div>

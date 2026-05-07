@@ -1,5 +1,4 @@
 import "../auth.styles.css";
-import "../../../styles/buttons.css";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";

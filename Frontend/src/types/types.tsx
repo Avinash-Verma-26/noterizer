@@ -14,3 +14,6 @@ export type LoginProps = {
   email: string;
   password: string;
 };
+export type ConvertNotesProps = {
+  encodedImage: string;
+};

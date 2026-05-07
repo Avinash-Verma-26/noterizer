@@ -1,15 +1,81 @@
-* {
-  margin: 0%;
-  padding: 0%;
+/* ============================================================
+   DESIGN TOKENS — edit these to restyle the entire app
+   ============================================================ */
+:root {
+  /* --- Backgrounds ----------------------------------------- */
+  --color-bg: rgb(45, 45, 49); /* page background     */
+  --color-surface: rgb(32, 32, 38); /* card / panel        */
+  --color-surface-raised: rgb(44, 44, 52); /* elevated element    */
+
+  /* --- Borders --------------------------------------------- */
+  --color-border: rgba(255, 255, 255, 0.07);
+  --color-border-strong: rgba(255, 255, 255, 0.14);
+
+  /* --- Accent ---------------------------------------------- */
+  --color-accent: rgb(226, 100, 100);
+  --color-accent-hover: rgb(102, 58, 69);
+  --color-accent-subtle: rgba(185, 36, 73, 0.14);
+
+  /* --- Text ------------------------------------------------ */
+  --color-text: rgb(236, 236, 242); /* primary             */
+  --color-text-muted: rgb(148, 148, 168); /* secondary / labels  */
+  --color-text-subtle: rgb(82, 82, 100); /* placeholders        */
+
+  /* --- Dropzone states ------------------------------------- */
+  --color-drop-focused: #2196f3;
+  --color-drop-accept: #00e676;
+  --color-drop-reject: #ff1744;
+
+  /* --- Spacing (4-pt scale) -------------------------------- */
+  --space-1: 0.25rem; /*  4px */
+  --space-2: 0.5rem; /*  8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-12: 3rem; /* 48px */
+
+  /* --- Border radius --------------------------------------- */
+  --radius-sm: 0.4rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+
+  /* --- Layout --------------------------------------------- */
+  --sidebar-width: 200px;
+  --form-max-width: 380px;
+
+  /* --- Transitions ---------------------------------------- */
+  --transition-fast: 0.14s ease;
+  --transition-base: 0.24s ease;
+
+  /* --- Shadows -------------------------------------------- */
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.6);
+
+  /* --- Legacy alias (keeps DropZone inline style working) -- */
+  --primary-color: var(--color-bg);
+}
+
+/* ============================================================
+   GLOBAL RESET
+   ============================================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
+
 html,
 body,
 #root {
+  height: 100%;
   width: 100%;
-  --primary-color: rgb(49, 49, 49);
-  background-color: var(--primary-color);
-  color: whitesmoke;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-family:
     system-ui,
     -apple-system,
@@ -22,4 +88,64 @@ body,
     "Open Sans",
     "Helvetica Neue",
     sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border: none;
+  outline: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  cursor: pointer;
+  transition:
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &.primary-button {
+    color: #fff;
+    background: linear-gradient(
+      175deg,
+      var(--color-accent-hover) 0%,
+      var(--color-accent) 65%
+    );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      var(--shadow-sm);
+
+    &:hover {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 0 0 1px rgba(185, 36, 73, 0.5),
+        0 4px 18px rgba(185, 36, 73, 0.35),
+        var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.97);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+  }
 }
