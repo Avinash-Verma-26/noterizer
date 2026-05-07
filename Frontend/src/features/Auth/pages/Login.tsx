@@ -21,7 +21,7 @@ const Login = () => {
     );
   }
   return (
-    <main>
+    <main className="entry-module">
       <div className="form-container">
         <h1>Login</h1>
         <form>

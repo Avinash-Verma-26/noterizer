@@ -7,7 +7,8 @@ html,
 body,
 #root {
   width: 100%;
-  background-color: rgb(49, 49, 49);
+  --primary-color: rgb(49, 49, 49);
+  background-color: var(--primary-color);
   color: whitesmoke;
   font-family:
     system-ui,

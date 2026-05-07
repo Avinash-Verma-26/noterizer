@@ -1,22 +1,19 @@
 import axios from "axios";
+import type { LoginProps, RegisterProps } from "../../../types/types";
 const serverUrl = "http://localhost:3000/api/auth";
 
-type RegisterProps = {
-  username: string;
-  email: string;
-  password: string;
-};
-type LoginProps = {
-  email: string;
-  password: string;
-};
-
-export async function register({ username, email, password }: RegisterProps) {
+export async function register({
+  firstname,
+  lastname,
+  email,
+  password,
+}: RegisterProps) {
   try {
     const response = await axios.post(
       `${serverUrl}/register`,
       {
-        username,
+        firstname,
+        lastname,
         email,
         password,
       },

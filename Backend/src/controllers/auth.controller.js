@@ -9,23 +9,20 @@ const blacklistModel = require("../models/blacklist.model");
  * @access Public
  */
 async function registerUserController(req, res) {
-  const { username, email, password } = req.body;
-  if (!username || !email || !password) {
-    return res
-      .status(400)
-      .json({ message: "Please provide username email and password" });
+  const { firstname, lastname, email, password } = req.body;
+  if (!firstname || !lastname || !email || !password) {
+    return res.status(400).json({
+      message: "Please provide firstname, lastname, email and password",
+    });
   }
-  const isUserAlreadyRegistered = await userModel.findOne({
-    $or: [{ username }, { email }],
-  });
+  const isUserAlreadyRegistered = await userModel.findOne({ email });
   if (isUserAlreadyRegistered) {
-    return res
-      .status(400)
-      .json({ message: "Username or email already registered" });
+    return res.status(400).json({ message: "Email already registered" });
   }
   const hash = await bcrypt.hash(password, 10);
   const user = await userModel.create({
-    username,
+    firstname,
+    lastname,
     email,
     password: hash,
   });
@@ -39,7 +36,8 @@ async function registerUserController(req, res) {
     message: "User added successfully",
     user: {
       id: user._id,
-      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
       email: user.email,
     },
   });
@@ -83,7 +81,8 @@ async function loginUserController(req, res) {
     message: "User logged in successfully",
     user: {
       id: user._id,
-      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
       email: user.email,
     },
   });
@@ -115,7 +114,8 @@ async function getMeController(req, res) {
   res.status(200).json({
     user: {
       id: user._id,
-      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
       email: user.email,
     },
   });

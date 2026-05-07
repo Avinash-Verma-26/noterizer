@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  username: {
+  firstname: {
     type: String,
-    unique: [true, "Username has to be unique"],
+    required: true,
+  },
+  lastname: {
+    type: String,
     required: true,
   },
   email: {

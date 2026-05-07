@@ -5,12 +5,13 @@ import { useAuth } from "../hooks/useAuth";
 const Register = () => {
   const navigate = useNavigate();
   const { loading, handleRegister } = useAuth();
-  const [username, setUsername] = useState<string>("");
+  const [firstname, setFirstname] = useState<string>("");
+  const [lastname, setLastname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    await handleRegister({ username, email, password });
+    await handleRegister({ firstname, lastname, email, password });
     navigate("/");
   };
   if (loading) {
@@ -21,18 +22,28 @@ const Register = () => {
     );
   }
   return (
-    <main>
+    <main className="entry-module">
       <div className="form-container">
         <h1>Register</h1>
         <form>
           <div className="input-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="firstname">First Name</label>
             <input
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setFirstname(e.target.value)}
               type="text"
-              name="username"
-              id="username"
-              placeholder="Enter username"
+              name="firstname"
+              id="firstname"
+              placeholder="Enter first name"
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="lastname">Last Name</label>
+            <input
+              onChange={(e) => setLastname(e.target.value)}
+              type="text"
+              name="lastname"
+              id="lastname"
+              placeholder="Enter last name"
             />
           </div>
           <div className="input-group">

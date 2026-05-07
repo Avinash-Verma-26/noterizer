@@ -1,15 +1,11 @@
 import { createContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { getMe } from "./services/auth.api";
+import type { UserProps } from "../../types/types";
 
-type User = {
-  username: string;
-  email: string;
-  id: string;
-};
 type AuthContextType = {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  user: UserProps | null;
+  setUser: React.Dispatch<React.SetStateAction<UserProps | null>>;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -31,7 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
     checkSession();
   }, []);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserProps | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   return (
     <AuthContext.Provider value={{ user, setUser, loading, setLoading }}>

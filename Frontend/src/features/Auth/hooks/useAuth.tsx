@@ -1,22 +1,14 @@
 import { useContext } from "react";
 import { AuthContext } from "../auth.context";
 import { login, logout, register } from "../services/auth.api";
+import type { LoginProps, RegisterProps } from "../../../types/types";
 
-type LoginType = {
-  email: string;
-  password: string;
-};
-type RegisterType = {
-  username: string;
-  email: string;
-  password: string;
-};
 //orchestrate and maintain the various tasks
 export const useAuth = () => {
   const context = useContext(AuthContext);
   const user = context?.user;
   const loading = context?.loading;
-  const handleLogin = async ({ email, password }: LoginType) => {
+  const handleLogin = async ({ email, password }: LoginProps) => {
     context?.setLoading(true);
     try {
       const data = await login({ email, password });
@@ -30,13 +22,14 @@ export const useAuth = () => {
     }
   };
   const handleRegister = async ({
-    username,
+    firstname,
+    lastname,
     email,
     password,
-  }: RegisterType) => {
+  }: RegisterProps) => {
     context?.setLoading(true);
     try {
-      const data = await register({ username, email, password });
+      const data = await register({ firstname, lastname, email, password });
       context?.setUser(data.user);
       context?.setLoading(false);
     } catch (err) {

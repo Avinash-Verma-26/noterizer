@@ -1,0 +1,49 @@
+.home-container {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 2rem;
+  min-height: 100vh;
+  .user-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+  .note-viewer {
+    flex: 1;
+    .drop-container {
+      height: 100%;
+    }
+    .image-analyzer {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      .image-preview {
+        flex: 1;
+        max-width: 40%;
+        padding-inline: 2rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: rem;
+        .image-functions {
+          display: flex;
+          flex-direction: row;
+          align-items: start;
+          justify-content: space-between;
+        }
+        img {
+          max-width: 100%;
+          max-height: 100%;
+          border-radius: 1rem;
+          align-self: center;
+          justify-self: center;
+        }
+      }
+      .ocr-panel {
+        width: 60%;
+      }
+    }
+  }
+}
