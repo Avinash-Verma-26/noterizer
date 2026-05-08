@@ -34,6 +34,7 @@ const Homepage = () => {
         >
           Logout
         </button>
+        <div className="notes-library"></div>
       </div>
       <div className="note-viewer">
         {hasImage ? (

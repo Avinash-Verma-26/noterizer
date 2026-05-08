@@ -17,3 +17,10 @@ export type LoginProps = {
 export type ConvertNotesProps = {
   encodedImage: string;
 };
+export type Note = {
+  _id: string;
+  title: string;
+  userId: string;
+  transcription: string;
+  aiAnalysis: string | null;
+};

@@ -1,10 +1,11 @@
 import { useContext } from "react";
-import { UserContext, type Note } from "../user.context";
+import { UserContext } from "../user.context";
 import {
   addNoteToLibrary,
   aiAnalyzeNote,
   convertNoteToText,
 } from "../services/notes.api";
+import type { Note } from "../../../types/types";
 
 export const useUser = () => {
   const context = useContext(UserContext);

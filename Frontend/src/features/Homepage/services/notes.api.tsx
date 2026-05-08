@@ -1,7 +1,6 @@
 import axios from "axios";
-import type { ConvertNotesProps } from "../../../types/types";
+import type { ConvertNotesProps, Note } from "../../../types/types";
 import { serverUrl } from "../../../main";
-import type { Note } from "../user.context";
 
 /**
  * @name convertNote

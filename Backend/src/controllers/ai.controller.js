@@ -24,7 +24,10 @@ async function convertNoteToText(req, res) {
             type: "image_url",
             image_url: { url: `data:image/jpeg;base64,${encodedImage}` },
           },
-          { type: "text", text: "Transcribe all text from this image." },
+          {
+            type: "text",
+            text: "Transcribe all text from this image and format it as markdown. Return only the raw markdown content — no code fences, no wrapping backticks, no preamble.",
+          },
         ],
       },
     ],

@@ -1,12 +1,7 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
 import { getUserNotes } from "./services/notes.api";
+import type { Note } from "../../types/types";
 
-export type Note = {
-  _id: string;
-  userId: string;
-  transcription: string;
-  aiAnalysis: string | null;
-};
 type UserContextType = {
   userNotes: Note[] | null;
   setUserNotes: React.Dispatch<React.SetStateAction<Note[] | null>>;
