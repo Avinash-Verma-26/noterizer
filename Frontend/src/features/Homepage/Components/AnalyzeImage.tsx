@@ -1,13 +1,17 @@
-import React from "react";
-import { convertNote } from "../services/notes.api";
+import React, { useState } from "react";
+import { useUser } from "../hooks/useUser";
+
 type AnalyzeImageProps = {
   setHasImage: React.Dispatch<React.SetStateAction<boolean>>;
   noteImage: string;
 };
+const { convertNote } = useUser();
 const AnalyzeImage = ({ setHasImage, noteImage }: AnalyzeImageProps) => {
-  const handleConvert = async (noteImage: string) => {
+  const [converted, setConverted] = useState<boolean>(false);
+  const [ocr, setOcr] = useState<string>("");
+  const handleConvert = async () => {
     const encodedImage = noteImage.split(",")[1];
-    const data = await convertNote({ encodedImage });
+    const data = await convertNote(encodedImage);
     console.log(data);
   };
   return (
@@ -22,7 +26,7 @@ const AnalyzeImage = ({ setHasImage, noteImage }: AnalyzeImageProps) => {
             ReUpload
           </button>
           <button
-            onClick={() => handleConvert(noteImage)}
+            onClick={() => handleConvert()}
             className="button primary-button"
           >
             Convert
