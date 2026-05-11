@@ -8,30 +8,30 @@ type AnalyzeImageProps = {
   onNoteSaved: () => void;
 };
 
+type Stage = "idle" | "converting" | "converted" | "saving";
+
 const AnalyzeImage = ({ setHasImage, noteImage, onNoteSaved }: AnalyzeImageProps) => {
   const { convertNote, addNote } = useUser();
   const [title, setTitle] = useState<string>("");
-  const [converted, setConverted] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [saving, setSaving] = useState<boolean>(false);
   const [ocr, setOcr] = useState<string>("");
+  const [stage, setStage] = useState<Stage>("idle");
 
   const handleConvert = async () => {
-    setLoading(true);
+    setStage("converting");
     const encodedImage = noteImage.split(",")[1];
     const data = await convertNote(encodedImage);
-    setConverted(true);
-    setLoading(false);
     setOcr(data.text);
+    setStage("converted");
   };
 
   const handleAddToLibrary = async () => {
-    if (!converted || !title.trim()) return;
-    setSaving(true);
+    if (!ocr || !title.trim()) return;
+    setStage("saving");
     await addNote(title.trim(), ocr);
-    setSaving(false);
     onNoteSaved();
   };
+
+  const canSave = stage === "converted" && !!title.trim() && !!ocr;
 
   return (
     <div className="image-analyzer">
@@ -47,23 +47,24 @@ const AnalyzeImage = ({ setHasImage, noteImage, onNoteSaved }: AnalyzeImageProps
           <button
             onClick={handleConvert}
             className="button primary-button"
-            disabled={loading}
+            disabled={stage !== "idle"}
           >
-            {loading ? "Converting..." : "Convert"}
+            {stage === "converting" ? "Converting..." : "Convert"}
           </button>
           <button
             onClick={handleAddToLibrary}
             className="button primary-button"
-            disabled={!converted || !title.trim() || saving}
+            disabled={!canSave}
           >
-            {saving ? "Saving..." : "Add to Library"}
+            {stage === "saving" ? "Saving..." : "Add to Library"}
           </button>
         </div>
       </div>
+
       <div className="ocr-panel">
-        {converted ? (
+        {stage === "converted" || stage === "saving" ? (
           <OCRView ocr={ocr} title={title} setTitle={setTitle} />
-        ) : loading ? (
+        ) : stage === "converting" ? (
           <div className="temporary-text">Converting image to text...</div>
         ) : (
           <div className="temporary-text">
