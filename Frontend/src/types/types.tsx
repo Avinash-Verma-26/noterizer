@@ -17,10 +17,30 @@ export type LoginProps = {
 export type ConvertNotesProps = {
   encodedImage: string;
 };
+
+export type Reference = {
+  title: string;
+  type: "book" | "article" | "paper" | "concept" | "tool";
+  description: string;
+};
+
+export type AnalysisBlock = {
+  id: string;
+  text: string;
+  type: "concept" | "task" | "idea" | "reflection" | "question";
+  summary: string;
+  references: Reference[];
+};
+
+export type NoteAnalysis = {
+  blocks: AnalysisBlock[];
+};
+
 export type Note = {
   _id: string;
   title: string;
   userId: string;
   transcription: string;
-  aiAnalysis: string | null;
+  aiAnalysis: NoteAnalysis | null;
+  createdAt?: string;
 };

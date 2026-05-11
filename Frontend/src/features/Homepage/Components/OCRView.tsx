@@ -1,8 +1,8 @@
 import ReactMarkdown from "react-markdown";
 type OCRViewProps = {
   ocr: string;
-  title: string | null;
-  setTitle: React.Dispatch<React.SetStateAction<string | null>>;
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
 };
 const OCRView = ({ ocr, setTitle, title }: OCRViewProps) => {
   return (
@@ -10,8 +10,8 @@ const OCRView = ({ ocr, setTitle, title }: OCRViewProps) => {
       <input
         className="title-input"
         type="text"
-        placeholder="Add a title for the Note"
-        value={title ?? ""}
+        placeholder="Add a title for the note"
+        value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <div className="markdown-holder">

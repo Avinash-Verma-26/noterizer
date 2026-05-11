@@ -1,19 +1,48 @@
 import "../homepage.styles.css";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../Auth/hooks/useAuth";
+import { useUser } from "../hooks/useUser";
 import DropZone from "../components/DropZone";
-import { useState } from "react";
 import AnalyzeImage from "../components/AnalyzeImage";
+import NoteLibrary from "../components/NoteLibrary";
+import NoteView from "../components/NoteView";
+import type { Note } from "../../../types/types";
+
+type View = "upload" | "analyze" | "note";
 
 const Homepage = () => {
-  const [hasImage, setHasImage] = useState<boolean>(false);
+  const [view, setView] = useState<View>("upload");
   const [noteImage, setNoteImage] = useState<string>("");
-  const navigate = useNavigate();
   const { user, handleLogout } = useAuth();
+  const { userNotes, currentNote, setCurrentNote } = useUser();
+  const navigate = useNavigate();
+
   const handleLogoutClick = async () => {
     await handleLogout();
     navigate("/login");
   };
+
+  // Wraps the boolean dispatcher DropZone expects — true means image selected, false means reset
+  const handleSetHasImage: React.Dispatch<React.SetStateAction<boolean>> = (action) => {
+    const next = typeof action === "function" ? action(view === "analyze") : action;
+    setView(next ? "analyze" : "upload");
+  };
+
+  const handleSelectNote = (note: Note) => {
+    setCurrentNote?.(note);
+    setView("note");
+  };
+
+  const handleNewNote = () => {
+    setNoteImage("");
+    setView("upload");
+  };
+
+  const handleNoteSaved = () => {
+    setView("note");
+  };
+
   if (!user) {
     return (
       <main>
@@ -21,27 +50,44 @@ const Homepage = () => {
       </main>
     );
   }
+
   return (
     <main className="home-container">
-      <div className="user-summary">
-        <p>Hey,</p>
-        <h1>
-          {user?.firstname} {user?.lastname}
-        </h1>
-        <button
-          onClick={() => handleLogoutClick()}
-          className="button primary-button"
-        >
+      <header className="home-header">
+        <p className="home-greeting">
+          Hey, <strong>{user.firstname} {user.lastname}</strong>
+        </p>
+        <button onClick={handleLogoutClick} className="button primary-button">
           Logout
         </button>
-        <div className="notes-library"></div>
-      </div>
-      <div className="note-viewer">
-        {hasImage ? (
-          <AnalyzeImage setHasImage={setHasImage} noteImage={noteImage} />
-        ) : (
-          <DropZone setHasImage={setHasImage} setNoteImage={setNoteImage} />
-        )}
+      </header>
+
+      <div className="home-body">
+        <NoteLibrary
+          notes={userNotes ?? []}
+          currentNoteId={currentNote?._id ?? null}
+          onSelectNote={handleSelectNote}
+          onNewNote={handleNewNote}
+        />
+
+        <section className="note-viewer">
+          {(view === "upload" || (view === "note" && !currentNote)) && (
+            <DropZone
+              setHasImage={handleSetHasImage}
+              setNoteImage={setNoteImage}
+            />
+          )}
+          {view === "analyze" && (
+            <AnalyzeImage
+              setHasImage={handleSetHasImage}
+              noteImage={noteImage}
+              onNoteSaved={handleNoteSaved}
+            />
+          )}
+          {view === "note" && currentNote && (
+            <NoteView note={currentNote} />
+          )}
+        </section>
       </div>
     </main>
   );

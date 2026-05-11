@@ -1,12 +1,7 @@
 import axios from "axios";
-import type { ConvertNotesProps, Note } from "../../../types/types";
+import type { ConvertNotesProps } from "../../../types/types";
 import { serverUrl } from "../../../main";
 
-/**
- * @name convertNote
- * @description Handles conversion of note from image to text via backend requires the base64 encoded string of the image
- * @access Private
- */
 export async function convertNoteToText({ encodedImage }: ConvertNotesProps) {
   try {
     const response = await axios.post(
@@ -20,27 +15,21 @@ export async function convertNoteToText({ encodedImage }: ConvertNotesProps) {
     throw error;
   }
 }
-/**
- * @name aiAnalayzeNote
- * @description Sends a text body to be analyzed by the AI.
- * @access Private
- */
-export async function aiAnalyzeNote(transcription: string) {
+
+export async function aiAnalyzeNote(noteId: string, transcription: string) {
   try {
     const response = await axios.post(
       `${serverUrl}/ai/analyzeNote`,
-      { transcription },
+      { noteId, transcription },
       { withCredentials: true },
     );
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    console.log("Failed to analyze note", error);
+    throw error;
+  }
 }
 
-/**
- * @name getUserNotes
- * @description Gets all the notes a user has in their library - based on the cookie with the user
- * @access Private
- */
 export async function getUserNotes() {
   try {
     const response = await axios.get(`${serverUrl}/ai/getUserNotes`, {
@@ -53,18 +42,25 @@ export async function getUserNotes() {
   }
 }
 
-/**
- * @name addNoteToLibrary
- * @description Adds the current note to the user library and the notes database as well
- * @access Private
- */
-export async function addNoteToLibrary(note: Note) {
+export async function deleteNoteById(noteId: string) {
   try {
-    await axios.post(
+    await axios.delete(`${serverUrl}/ai/deleteNote/${noteId}`, {
+      withCredentials: true,
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function addNoteToLibrary(title: string, transcription: string) {
+  try {
+    const response = await axios.post(
       `${serverUrl}/ai/addUserNote`,
-      { note },
+      { title, transcription },
       { withCredentials: true },
     );
+    return response.data;
   } catch (err) {
     console.log(err);
     throw err;

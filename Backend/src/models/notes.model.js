@@ -6,12 +6,16 @@ const notesSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    title: {
+      type: String,
+      required: true,
+    },
     transcription: {
       type: String,
       required: true,
     },
     aiAnalysis: {
-      type: String,
+      type: mongoose.Schema.Types.Mixed,
       default: null,
     },
   },

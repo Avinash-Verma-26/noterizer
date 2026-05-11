@@ -18,7 +18,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const getNotes = async () => {
       try {
         const data = await getUserNotes();
-        setUserNotes(data);
+        setUserNotes(data.notes);
       } catch (err) {
         console.log(err);
       }
