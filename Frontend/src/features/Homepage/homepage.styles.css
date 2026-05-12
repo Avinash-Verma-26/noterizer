@@ -41,11 +41,12 @@
 /* ---- Note library sidebar --------------------------------- */
 .note-library {
   width: 280px;
+  min-width: 280px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   background-color: var(--color-surface);
-  border-right: 1px solid var(--color-border);
+  border-right: 2px solid var(--color-accent-hover);
   overflow: hidden;
 }
 
@@ -55,7 +56,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-6) var(--space-4) var(--space-4);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border-strong);
 }
 
 .note-count {
@@ -69,6 +70,14 @@
 .new-note-btn {
   padding: var(--space-2) var(--space-3);
   font-size: 0.8rem;
+}
+
+.note-list-empty {
+  padding: var(--space-4);
+  font-size: 0.8rem;
+  color: var(--color-text-subtle);
+  text-align: center;
+  line-height: 1.5;
 }
 
 .note-list {
@@ -439,6 +448,16 @@
   font-size: 0.8rem;
   line-height: 1.6;
   color: var(--color-text-muted);
+}
+
+.block-prior-connection {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgb(183, 148, 246);
+  padding: var(--space-2) var(--space-3);
+  border-left: 2px solid rgba(183, 148, 246, 0.4);
+  background-color: rgba(183, 148, 246, 0.06);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
 /* Block type color pills */

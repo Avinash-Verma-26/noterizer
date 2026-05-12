@@ -72,6 +72,9 @@ const NoteView = ({ note }: NoteViewProps) => {
                     <span className="block-summary">{block.summary}</span>
                   </div>
                   <p className="block-text">{block.text}</p>
+                  {block.priorConnection && (
+                    <p className="block-prior-connection">{block.priorConnection}</p>
+                  )}
                 </li>
               ))}
             </ul>

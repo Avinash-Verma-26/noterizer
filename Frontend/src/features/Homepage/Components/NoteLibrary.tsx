@@ -25,6 +25,9 @@ const NoteLibrary = ({
         </button>
       </div>
       <ul className="note-list">
+        {notes.length === 0 && (
+          <li className="note-list-empty">No notes yet. Convert an image to get started.</li>
+        )}
         {notes.map((note) => (
           <li
             key={note._id}

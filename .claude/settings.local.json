@@ -3,7 +3,25 @@
     "allow": [
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\verma\\\\Desktop\\\\Jarvis\\\\03_Code\\\\noterizer\" -Recurse -Directory)",
       "Bash(Select-Object -ExpandProperty FullName)",
-      "PowerShell(head -100)"
+      "PowerShell(head -100)",
+      "Bash(grep -E \"\\\\.\\(js|json|py\\)$\")",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Bash(npm run *)",
+      "Bash(node_modules/.bin/tsc --noEmit)",
+      "Bash(git stash *)",
+      "Bash(git pull *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git restore *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(node_modules/.bin/vite build *)",
+      "Bash(node_modules/.bin/vite --port 5174)",
+      "Bash(curl -s http://localhost:5174)",
+      "Bash(kill %1)",
+      "Bash(node -e \"const pkg = require\\('@langchain/textsplitters'\\); console.log\\(Object.keys\\(pkg\\)\\)\")"
     ]
   }
 }

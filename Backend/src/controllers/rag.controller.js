@@ -1,5 +1,5 @@
 const OpenAI = require("openai");
-const { SemanticChunker } = require("@langchain/textsplitters");
+const { RecursiveCharacterTextSplitter } = require("@langchain/textsplitters");
 const { OpenAIEmbeddings } = require("@langchain/openai");
 const notesModel = require("../models/notes.model");
 const userModel = require("../models/user.model");
@@ -23,15 +23,18 @@ function getEmbeddings() {
   return embeddings;
 }
 
+const splitter = new RecursiveCharacterTextSplitter({
+  chunkSize: 300,
+  chunkOverlap: 50,
+  separators: ["\n\n", "\n", ". ", "! ", "? ", " ", ""],
+});
+
 async function chunkAndEmbed(text) {
   const emb = getEmbeddings();
-  const chunker = new SemanticChunker(emb, {
-    breakpointThresholdType: "percentile",
-  });
-  const docs = await chunker.createDocuments([text]);
-  const chunks = docs.map((doc) => doc.pageContent);
+  const docs = await splitter.createDocuments([text]);
+  const chunks = docs.length > 0 ? docs.map((doc) => doc.pageContent) : [text];
   const embeddingVectors = await emb.embedDocuments(chunks);
-  return chunks.map((text, i) => ({ text, embedding: embeddingVectors[i] }));
+  return chunks.map((chunk, i) => ({ text: chunk, embedding: embeddingVectors[i] }));
 }
 
 /**
@@ -44,16 +47,16 @@ async function addNoteToLibrary(req, res) {
     const userId = req.user.id;
     const { title, transcription } = req.body;
 
-    if (!title || !transcription) {
+    if (!title?.trim() || !transcription?.trim()) {
       return res.status(400).json({ message: "Title and transcription are required" });
     }
 
-    const note = await notesModel.create({ userId, title, transcription });
+    const note = await notesModel.create({ userId, title: title.trim(), transcription: transcription.trim() });
     await userModel.findByIdAndUpdate(userId, { $push: { notes: note._id } });
 
     // chunk + embed in background so response is instant
-    chunkAndEmbed(transcription)
-      .then((chunks) => upsertChunks(userId, note._id.toString(), chunks))
+    chunkAndEmbed(note.transcription)
+      .then((chunks) => chunks.length > 0 && upsertChunks(userId, note._id.toString(), chunks))
       .catch((err) => console.error("RAG indexing failed:", err));
 
     return res.status(201).json({ note });

@@ -1,5 +1,6 @@
 import "../homepage.styles.css";
-import { useState } from "react";
+import { useState, Component } from "react";
+import type { ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../Auth/hooks/useAuth";
 import { useUser } from "../hooks/useUser";
@@ -8,6 +9,29 @@ import AnalyzeImage from "../components/AnalyzeImage";
 import NoteLibrary from "../components/NoteLibrary";
 import NoteView from "../components/NoteView";
 import type { Note } from "../../../types/types";
+
+class LibraryErrorBoundary extends Component<
+  { children: ReactNode },
+  { error: Error | null }
+> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { error: null };
+  }
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <aside className="note-library" style={{ padding: "1rem", fontSize: "0.8rem", color: "salmon" }}>
+          Library error: {this.state.error.message}
+        </aside>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 type View = "upload" | "analyze" | "note";
 
@@ -63,12 +87,14 @@ const Homepage = () => {
       </header>
 
       <div className="home-body">
-        <NoteLibrary
-          notes={userNotes ?? []}
-          currentNoteId={currentNote?._id ?? null}
-          onSelectNote={handleSelectNote}
-          onNewNote={handleNewNote}
-        />
+        <LibraryErrorBoundary>
+          <NoteLibrary
+            notes={userNotes ?? []}
+            currentNoteId={currentNote?._id ?? null}
+            onSelectNote={handleSelectNote}
+            onNewNote={handleNewNote}
+          />
+        </LibraryErrorBoundary>
 
         <section className="note-viewer">
           {(view === "upload" || (view === "note" && !currentNote)) && (

@@ -23,7 +23,7 @@ async function upsertChunks(userId, noteId, chunks) {
     values: chunk.embedding,
     metadata: { text: chunk.text, noteId },
   }));
-  await ns.upsert(vectors);
+  await ns.upsert({ records: vectors });
 }
 
 /**

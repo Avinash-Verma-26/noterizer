@@ -29,6 +29,7 @@ export type AnalysisBlock = {
   text: string;
   type: "concept" | "task" | "idea" | "reflection" | "question";
   summary: string;
+  priorConnection: string | null;
   references: Reference[];
 };
 
